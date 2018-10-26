@@ -108,4 +108,16 @@ class Product
 
         return $this;
     }
+
+    public function addTag(Tag $tag): self
+    {
+        $this->tags->add($tag);
+
+        return $this;
+    }
+
+    public function getTags(): ?ArrayCollection
+    {
+        return $this->tags;
+    }
 }
