@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,7 +35,16 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // TODO @gritt handle UploadFile
+            /** @var UploadedFile $file */
+            $file = $product->getImage();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+
+            $file->move(
+                $this->getParameter('products_directory'),
+                $fileName
+            );
+
+            $product->setImage($fileName);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
