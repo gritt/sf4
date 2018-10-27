@@ -43,9 +43,6 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('product_index');
         }
 
-        // TODO @gritt, apply bootstrap in base twig templates
-        // TODO @gritt, override twig default widgets with bootstrap markup
-
         return $this->render('product/new.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
@@ -85,7 +82,7 @@ class ProductController extends AbstractController
      */
     public function delete(Request $request, Product $product): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($product);
             $em->flush();
