@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Entity\Tag;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,8 +16,32 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class AddTagCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'add-tag';
 
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+
+    /**
+     * AddTagCommand constructor.
+     * @param EntityManagerInterface $em
+     * @param null $name
+     */
+    public function __construct(EntityManagerInterface $em, $name = null)
+    {
+        $this->entityManager = $em;
+
+        parent::__construct($name);
+    }
+
+    /**
+     * Set description and arguments
+     */
     protected function configure()
     {
         $this
@@ -23,17 +49,28 @@ class AddTagCommand extends Command
             ->addArgument('name', InputArgument::OPTIONAL, 'The tag name');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * Creates a tag entity and persist
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return void
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
-        $name = $input->getArgument('name');
 
-        if ($name) {
-            $io->note(sprintf('You passed an argument: %s', $name));
+        $name = $input->getArgument('name');
+        if (!$name) {
+            $io->error('Missing name argument, try: php bin/console add-tag Cats');
+            return;
         }
 
-        // TODO @gritt, implement AddTagCommand to create new tags using symfony's bin/console
+        $tag = new Tag();
+        $tag->setName($name);
 
-        $io->success('Tag created successfully!');
+        $this->entityManager->persist($tag);
+        $this->entityManager->flush();
+
+        $io->success('Tag: "' . $name . '" created successfully!');
     }
 }
