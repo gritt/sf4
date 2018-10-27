@@ -2,7 +2,9 @@
 
 namespace App\Service\Uploader;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Class UploaderService
@@ -10,8 +12,46 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UploaderService
 {
-    public function upload(Request $request): string
+    /**
+     * @var ParameterBag
+     */
+    private $parameterBag;
+
+
+    /**
+     * UploaderService constructor.
+     * @param ParameterBag $parameterBag
+     */
+    public function __construct(ParameterBag $parameterBag)
     {
-        // TODO @gritt, implement uploader service
+        $this->parameterBag = $parameterBag;
+    }
+
+    /**
+     * @param File $file
+     * @return null|File
+     */
+    public function upload(File $file): ?File
+    {
+        $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
+
+        try {
+            $file->move(
+                $this->parameterBag->get('products_directory'),
+                $fileName
+            );
+        } catch (FileException $e) {
+            //TODO @gritt, handle it
+        }
+
+        return new File($fileName);
+    }
+
+    /**
+     * @return string
+     */
+    private function generateUniqueFileName(): string
+    {
+        return md5(uniqid());
     }
 }
