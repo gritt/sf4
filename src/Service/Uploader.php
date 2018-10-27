@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Service\Uploader;
+namespace App\Service;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * Class UploaderService
- * @package App\Service\Uploader
+ * Class Uploader
+ * @package App\Service
  */
-class UploaderService
+class Uploader
 {
     /**
      * @var ParameterBagInterface
@@ -19,7 +19,7 @@ class UploaderService
 
 
     /**
-     * UploaderService constructor.
+     * Uploader constructor.
      * @param ParameterBagInterface $params
      */
     public function __construct(ParameterBagInterface $params)
