@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -19,26 +20,40 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please, inform a title")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 4000,
+     *      minMessage = "The description must have be at least {{ limit }} characters long",
+     *      maxMessage = "The description cannot be longer than {{ limit }} characters"
+     * )
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Please, upload the image brochure as a PNG or JPEG file.")
+     * @Assert\Image(mimeTypes={"image/jpeg", "image/png"}, mimeTypesMessage="Sorry, unsupported extension")
      */
     private $image;
 
     /**
      * @ORM\Column(type="integer")
+     *
+     * @Assert\NotNull(message="Please, define the stock amount")
+     * @Assert\GreaterThan(0)
      */
     private $stock;
 
     /**
      * Many Products have Many Tags.
+     *
      * @ORM\ManyToMany(targetEntity="Tag")
      * @ORM\JoinTable(name="product_tags",
      *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
