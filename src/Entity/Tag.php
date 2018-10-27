@@ -69,7 +69,7 @@ class Tag
         return $this;
     }
 
-    function addProduct(Product $product): void
+    public function addProduct(Product $product): void
     {
         if ($this->products->contains($product)) {
             return;
@@ -77,5 +77,15 @@ class Tag
 
         $this->products->add($product);
         $product->addTag($this);
+    }
+
+    public function removeProduct(Product $product): void
+    {
+        if (!$this->products->contains($product)) {
+            return;
+        }
+
+        $this->products->removeElement($product);
+        $product->removeTag($this);
     }
 }

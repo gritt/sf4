@@ -147,4 +147,14 @@ class Product
         $this->tags->add($tag);
         $tag->addProduct($this);
     }
+
+    public function removeTag(Tag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            return;
+        }
+
+        $this->tags->removeElement($tag);
+        $tag->removeProduct($this);
+    }
 }
