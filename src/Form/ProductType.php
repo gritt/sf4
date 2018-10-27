@@ -10,8 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -47,7 +47,7 @@ class ProductType extends AbstractType
                     new NotBlank([
                         'message' => 'Please, upload the image brochure as a PNG or JPEG file.'
                     ]),
-                    new Image([
+                    new File([
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png'
