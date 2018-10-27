@@ -38,7 +38,6 @@ class Product
     private $description;
 
     /**
-     * @var File
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Please, upload the image brochure as a PNG or JPEG file.")
      * @Assert\Image(mimeTypes={"image/jpeg", "image/png"}, mimeTypesMessage="Sorry, unsupported extension")
@@ -104,12 +103,12 @@ class Product
         return $this;
     }
 
-    public function getImage(): ?File
+    public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage(File $image): self
+    public function setImage($image): self
     {
         $this->image = $image;
 
