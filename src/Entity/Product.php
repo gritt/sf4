@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,7 +38,6 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
      * @Assert\NotBlank(message="Please, upload the image brochure as a PNG or JPEG file.")
      * @Assert\Image(mimeTypes={"image/jpeg", "image/png"}, mimeTypesMessage="Sorry, unsupported extension")
      */
@@ -45,7 +45,6 @@ class Product
 
     /**
      * @ORM\Column(type="integer")
-     *
      * @Assert\NotNull(message="Please, define the stock amount")
      * @Assert\GreaterThan(0)
      */
@@ -54,7 +53,8 @@ class Product
     /**
      * Many Products have Many Tags.
      *
-     * @ORM\ManyToMany(targetEntity="Tag")
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="products")
      * @ORM\JoinTable(name="product_tags",
      *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
@@ -62,14 +62,16 @@ class Product
      */
     private $tags;
 
-    /**
-     * Product constructor.
-     */
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
     }
 
+    public function __toString(): ?string
+    {
+        return $this->title;
+    }
 
     public function getId(): ?int
     {
@@ -124,15 +126,25 @@ class Product
         return $this;
     }
 
-    public function addTag(Tag $tag): self
+    public function getTags(): ?Collection
     {
-        $this->tags->add($tag);
+        return $this->tags;
+    }
+
+    public function setTags(ArrayCollection $tags): self
+    {
+        $this->tags = $tags;
 
         return $this;
     }
 
-    public function getTags(): ?ArrayCollection
+    public function addTag(Tag $tag): void
     {
-        return $this->tags;
+        if ($this->tags->contains($tag)) {
+            return;
+        }
+
+        $this->tags->add($tag);
+        $tag->addProduct($this);
     }
 }
