@@ -1,5 +1,17 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <style type="text/css">
+        img {
+            width: 300px;
+            height: 240px;
+            background-position: center;
+            border-radius: 3px;
+            border: solid 1px #eee;
+        }
+    </style>
+{% endblock %}
+
 {% block title %}Product{% endblock %}
 
 {% block body %}
@@ -21,7 +33,9 @@
             </tr>
             <tr>
                 <th>Image</th>
-                <td>{{ product.image }}</td>
+                <td>
+                    <img src="{{ asset('uploads/products/' ~ product.image) }}">
+                </td>
             </tr>
             <tr>
                 <th>Stock</th>
