@@ -3,50 +3,89 @@
 {% block stylesheets %}
     <style type="text/css">
         img {
-            width: 300px;
-            height: 240px;
-            background-position: center;
-            border-radius: 3px;
-            border: solid 1px #eee;
+            margin: 2% auto;
+            width: 128px;
+            height: 128px;
+            border-radius: 24px;
+            box-shadow: 0 0 5px #a2a2a2;
         }
     </style>
 {% endblock %}
 
-{% block title %}Product{% endblock %}
+{% block title %}View Product{% endblock %}
 
 {% block body %}
-    <h1>Product</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ product.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product.description }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>
-                    <img src="{{ asset('uploads/products/' ~ product.image) }}">
-                </td>
-            </tr>
-            <tr>
-                <th>Stock</th>
-                <td>{{ product.stock }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
-    <a href="{{ path('product_index') }}">back to list</a>
+        <h1 class="h2">View Product</h1>
 
-    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+        <div class="btn-toolbar mb-3 mb-md-0">
 
-    {{ include('product/_delete_form.html.twig') }}
+            <div class="btn-group mr-3">
+                <a class="btn btn-sm btn-outline-primary" href="{{ path('product_new') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="feather feather-plus-circle">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    New
+                </a>
+                <a class="btn btn-sm btn-outline-primary" href="{{ path('product_edit', {'id': product.id}) }}">
+                    <svg class="feather feather-edit sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24"
+                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+                        <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+                    </svg>
+                    Edit
+                </a>
+            </div>
+
+            {{ include('product/_delete_form.html.twig') }}
+
+            <a class="btn btn-sm btn-outline-secondary" href="{{ path('product_index') }}">
+                <svg class="feather feather-home sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24"
+                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4 box-shadow">
+
+            <img src="{{ asset('uploads/products/' ~ product.image) }}">
+
+            <h5 style="text-align: center">{{ product.title }}</h5>
+
+            <div class="card-body">
+
+                <p class="card-text">
+                    <b>Stock:</b> {{ product.stock }}
+                </p>
+
+                <p class="card-text">
+                    <b>Description:</b> {{ product.description }}
+                </p>
+
+                <p class="card-text">
+                    <b>Tags:</b>
+                    {% for tag in product.tags %}
+                    <span class="badge badge-primary">{{ tag.name }}</span>
+                    {% else %}
+                    no tags found :(
+                    {% endfor %}
+                </p>
+
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
