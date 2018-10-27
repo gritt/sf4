@@ -29,8 +29,8 @@ class Product
      * @Assert\Length(
      *      min = 2,
      *      max = 4000,
-     *      minMessage = "The description must have be at least {{ limit }} characters long",
-     *      maxMessage = "The description cannot be longer than {{ limit }} characters"
+     *      minMessage = "The description must have be at least 2 characters long",
+     *      maxMessage = "The description cannot be longer than 4000 characters"
      * )
      */
     private $description;
