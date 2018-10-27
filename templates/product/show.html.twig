@@ -68,17 +68,17 @@
             <div class="card-body">
 
                 <p class="card-text">
-                    <b>Stock:</b> {{ product.stock }}
+                    <b>Description:</b> {{ product.description }}
                 </p>
 
                 <p class="card-text">
-                    <b>Description:</b> {{ product.description }}
+                    <b>Stock:</b> {{ product.stock }}
                 </p>
 
                 <p class="card-text">
                     <b>Tags:</b>
                     {% for tag in product.tags %}
-                    <span class="badge badge-primary">{{ tag.name }}</span>
+                    <span class="badge badge-secondary">{{ tag.name }}</span>
                     {% else %}
                     no tags found :(
                     {% endfor %}
