@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -102,14 +103,16 @@ class Product
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage(): ?File
     {
-        return $this->image;
+        return empty($this->image) ?
+            null :
+            new File($this->image);
     }
 
-    public function setImage(string $image): self
+    public function setImage(File $image): self
     {
-        $this->image = $image;
+        $this->image = $image->getPath();
 
         return $this;
     }
