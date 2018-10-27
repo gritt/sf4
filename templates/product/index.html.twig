@@ -1,10 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{#<!-- Custom styles for this template -->#}
 {% block stylesheets %}
-
     <style type="text/css">
-        /* Chart.js */
         @-webkit-keyframes chartjs-render-animation {
             from {
                 opacity: 0.99
@@ -24,6 +21,13 @@
         .chartjs-render-monitor {
             -webkit-animation: chartjs-render-animation 0.001s;
             animation: chartjs-render-animation 0.001s;
+        }
+        img {
+            width: 85px;
+            height: 60px;
+            background-position: center;
+            border-radius: 3px;
+            border: solid 1px #eee;
         }
     </style>
 {% endblock %}
@@ -92,7 +96,9 @@
             {% for product in products %}
                 <tr>
                     <td>{{ product.id }}</td>
-                    <td>{{ product.image }}</td>
+                    <td>
+                        <img src="{{ asset('uploads/products/' ~ product.image) }}">
+                    </td>
                     <td>{{ product.title }}</td>
                     <td>{{ product.stock }}</td>
                     <td>
