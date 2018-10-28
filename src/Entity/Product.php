@@ -40,7 +40,7 @@ class Product
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Please, upload the image brochure as a PNG or JPEG file.")
-     * @Assert\File(mimeTypes={"image/jpeg", "image/png"}, mimeTypesMessage="Sorry, unsupported extension")
+     * @Assert\File(maxSize="5M", mimeTypes={"image/jpeg", "image/png", "image/gif"}, mimeTypesMessage="Sorry, unsupported extension")
      */
     private $image;
 
