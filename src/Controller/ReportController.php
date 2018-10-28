@@ -18,7 +18,7 @@ class ReportController extends AbstractController
      */
     public function tagsByProducts(Request $request, Report $report): JsonResponse
     {
-        return new JsonResponse(
+        return $this->json(
             $report->getTagsByProducts()
         );
     }
