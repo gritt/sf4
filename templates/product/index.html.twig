@@ -91,7 +91,7 @@
         </div>
     </div>
 
-    <div id="reportsTab" style="display: none;">
+    <div id="reportsTab" style="display: none;" data-request-uri="{{ path('report_tags_by_products') }}">
         {% include('product/reports.html.twig') %}
     </div>
 
@@ -104,35 +104,29 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
         <script>
-            var ctx = document.getElementById("myChart");
 
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Windows', 'macOS', 'Linux', 'iOS', 'Android'],
-                    datasets: [{
-                        data: [182, 60, 40, 120, 20, 180],
-                        lineTension: 0,
-                        backgroundColor: 'transparent',
-                        borderColor: '#007bff',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#007bff'
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    legend: {
-                        display: false,
+            var reportsTab = document.getElementById('reportsTab');
+            var reportsRequestUri = reportsTab.dataset.requestUri;
+
+            var ajax = new XMLHttpRequest();
+            ajax.open("GET", reportsRequestUri, true);
+            ajax.send();
+
+            ajax.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (ajax.responseText) {
+                        var respoonse = JSON.parse(ajax.responseText);
+                        buildChart(
+                            respoonse.data.tagsNames,
+                            respoonse.data.tagsProductsNumber
+                        );
                     }
                 }
-            });
+            };
 
+            /*
+             * toggle between 'Products and 'Reports'
+             */
             function toogleTab(tabToShowId, tabToHideId) {
 
                 var tabToShow = document.getElementById(tabToShowId);
@@ -140,6 +134,41 @@
 
                 tabToShow.style.display = 'block';
                 tabToHide.style.display = 'none';
+            }
+
+            /*
+             * build the chart between labels and values
+             */
+            function buildChart(labels, values) {
+
+                var ctx = document.getElementById("myChart");
+
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            lineTension: 0,
+                            backgroundColor: 'transparent',
+                            borderColor: '#007bff',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#007bff'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false,
+                        }
+                    }
+                });
             }
 
         </script>
