@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,7 +27,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/new", name="product_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploader $fileUploader): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
@@ -35,15 +35,8 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var UploadedFile $file */
             $file = $product->getImage();
-            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-
-            $file->move(
-                $this->getParameter('products_directory'),
-                $fileName
-            );
-
+            $fileName = $fileUploader->upload($file);
             $product->setImage($fileName);
 
             $em = $this->getDoctrine()->getManager();
@@ -70,13 +63,33 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}/edit", name="product_edit", methods="GET|POST")
      */
-    public function edit(Request $request, Product $product): Response
+    public function edit(Request $request, Product $product, FileUploader $fileUploader): Response
     {
+        if ($request->isMethod('GET')) {
+            $product->setImage(
+                $fileUploader->getFile($product->getImage())
+            );
+        }
+
+        if ($request->isMethod('POST')) {
+            $files = $request->files->get('product');
+            if (isset($files['image'])) {
+                $product->setImage($files['image']);
+            }
+        }
+
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+            $file = $product->getImage();
+            $fileName = $fileUploader->upload($file);
+            $product->setImage($fileName);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
 
             return $this->redirectToRoute('product_edit', ['id' => $product->getId()]);
         }
