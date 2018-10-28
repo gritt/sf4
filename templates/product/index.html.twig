@@ -115,11 +115,13 @@
             ajax.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     if (ajax.responseText) {
-                        var respoonse = JSON.parse(ajax.responseText);
-                        buildChart(
-                            respoonse.data.tagsNames,
-                            respoonse.data.tagsProductsNumber
-                        );
+                        var response = JSON.parse(ajax.responseText);
+                        if (response.data) {
+                            buildChart(
+                                response.data.tagsNames,
+                                response.data.tagsProductsNumber
+                            );
+                        }
                     }
                 }
             };
