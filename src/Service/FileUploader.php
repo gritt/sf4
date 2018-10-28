@@ -4,6 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
@@ -22,6 +23,7 @@ class FileUploader
     {
         $this->targetDirectory = $parameterBag->get('products_directory');
     }
+
 
     /**
      * @param UploadedFile $file
@@ -52,5 +54,19 @@ class FileUploader
     public function getTargetDirectory(): string
     {
         return $this->targetDirectory;
+    }
+
+
+    /**
+     * @param string $path
+     * @return null|File
+     */
+    public function getFile(string $path): ?File
+    {
+        try {
+            return new File($this->targetDirectory . DIRECTORY_SEPARATOR . $path);
+        } catch (FileException $e) {
+            return null;
+        }
     }
 }
