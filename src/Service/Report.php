@@ -50,7 +50,7 @@ class Report
                 'message' => 'report built successfully',
                 'data' => [
                     'tagsNames' => $tagNames,
-                    'tagProductsNumber' => $tagProductsNumber,
+                    'tagsProductsNumber' => $tagProductsNumber
                 ]
             ];
 
