@@ -69,6 +69,6 @@
 
 5.  DONE! you now have some tags to play around while creating products
 
-4.  Access: http://symfony.localhost/product to start
+6.  Access: http://symfony.localhost/product to start
 
 
