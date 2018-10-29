@@ -55,9 +55,9 @@
 
         $: php -d memory_limit=-1 /usr/bin/composer update
 
-3.  Also, create the database tables by running the migrations: 
+3.  Also, create the database schema with doctrine: 
         
-        $: bin/console doctrine:migrations:execute
+        $: bin/console doctrine:schema:create
 
 4.  Also in the application container, create some tags:
 
