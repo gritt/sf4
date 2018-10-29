@@ -65,18 +65,7 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product, FileUploader $fileUploader): Response
     {
-        if ($request->isMethod('GET')) {
-            $product->setImage(
-                $fileUploader->getFile($product->getImage())
-            );
-        }
-
-        if ($request->isMethod('POST')) {
-            $files = $request->files->get('product');
-            if (isset($files['image'])) {
-                $product->setImage($files['image']);
-            }
-        }
+        $product = $this->hydrateUpdate($request, $product, $fileUploader);
 
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -98,6 +87,41 @@ class ProductController extends AbstractController
             'product' => $product,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Product $product
+     * @param FileUploader $fileUploader
+     * @return Product
+     */
+    private function hydrateUpdate(Request $request, Product $product, FileUploader $fileUploader): Product
+    {
+        /*
+         * TODO @gritt, fix workaround
+         * Symfony's expects a File to populate the edit form, the image in ProductType is set to be a FileType,
+         * even after creating a File object with the current upload, the file input shows as empty, thus, the user
+         * has to upload a new image while editing.
+         */
+        if ($request->isMethod('GET')) {
+            $product->setImage(
+                $fileUploader->getFile($product->getImage())
+            );
+
+            return $product;
+        }
+
+        /*
+         * When handling the update, the new UploadedFile image is not set in the Product image attribute
+         * So i've fetched the UploadedFile from the request directly
+         */
+        $files = $request->files->get('product');
+
+        if (isset($files['image'])) {
+            $product->setImage($files['image']);
+        }
+
+        return $product;
     }
 
     /**
