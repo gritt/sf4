@@ -61,11 +61,11 @@
 
 4.  Also in the application container, create some tags:
 
-        $: bin/console add-tag Android
-
-        $: bin/console add-tag iOS
-
-        $: bin/console add-tag WindowsPhone
+        $: bin/console add-tag Gadgets
+        $: bin/console add-tag Acessories
+        $: bin/console add-tag Computers
+        $: bin/console add-tag Smartphones
+        $: bin/console add-tag Heaphones
 
 5.  DONE! you now have some tags to play around while creating products
 
