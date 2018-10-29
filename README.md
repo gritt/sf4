@@ -1,12 +1,12 @@
 # Symfony 4 CRUD
 
 
-## Initial setup
+## Docker setup
 
 
 1.  Install docker and docker-compose tool.
 
-2.  Clone the docker environment repository and the project repository as "symfony":
+2.  Clone the docker environment repository, and inside it clone the project repository as "symfony":
     
         $: git clone https://github.com/eko/docker-symfony.git
         
@@ -15,13 +15,14 @@
         $: git clone https://github.com/gritt/sf4.git symfony
         
     
-3.  Build and up the docker containers
+3.  Build and start the docker containers
 
         $: docker-compose build
         
         $: docker-compose up -d
 
 4.  Configure the database connection:
+
         $ cp .env.dist .env
         
 5.  Open the .env file and update line 16 according to database password set in the docker config  
@@ -38,7 +39,7 @@
         
             127.0.0.1	localhost   symfony.localhost
 
-7.  DONE! accessing symfony.localhost in your browser should show Symfony's default page
+7.  DONE! accessing http://symfony.localhost in your browser should show Symfony's default page
 
 
 ## Application setup 
