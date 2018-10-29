@@ -20,8 +20,14 @@
         $: docker-compose build
         
         $: docker-compose up -d
+        
+3.1.  Check if the containers are running with:
+        
+        $: docker-compose ps
 
 4.  Enter the "symfony" dir and configure the database connection:
+        
+        $ cd symfony
 
         $ cp .env.dist .env
         
@@ -39,18 +45,21 @@
         
             127.0.0.1	localhost   symfony.localhost
 
-7.  DONE! accessing http://symfony.localhost in your browser should show Symfony's default page
-
-
 ## Application setup 
 
-1.  Back in the "docker-symfony" dir, enter the application container and create the database tables running the migrations:
+1.  Back in the "docker-symfony" dir, enter the application container:
 
         $: docker exec -it docker-symfony_php_1 ash
+        
+2.  In the application container, run composer update to download dependencies:
 
+        $: php -d memory_limit=-1 /usr/bin/composer update
+
+3.  Also, create the database tables by running the migrations: 
+        
         $: bin/console doctrine:migrations:execute
 
-2.  Also in the application container, create some tags:
+4.  Also in the application container, create some tags:
 
         $: bin/console add-tag Android
 
@@ -58,7 +67,7 @@
 
         $: bin/console add-tag WindowsPhone
 
-3.  DONE! you now have some tags to play around while creating products
+5.  DONE! you now have some tags to play around while creating products
 
 4.  Access: http://symfony.localhost/product to start
 
