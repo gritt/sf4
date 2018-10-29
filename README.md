@@ -1,19 +1,64 @@
+# Symfony 4 CRUD
 
 
-Project Setup
+## Initial setup
 
-    1 . git clone https://github.com/eko/docker-symfony
+
+1.  Install docker and docker-compose tool.
+
+2.  Clone the docker environment repository and the project repository as "symfony":
     
-    1.2 cd, git clone this repo as ./symfony
-
-    2 . docker-compose build
-
-    2.1 configure /etc hosts
-
-    3 . docker-compose up -d
+        $: git clone https://github.com/eko/docker-symfony.git
         
-    4 . php bin/console doctrine:migrations:migrate
+        $: cd docker-symfony
+        
+        $: git clone https://github.com/gritt/sf4.git symfony
+        
+    
+3.  Build and up the docker containers
 
-    5.  fixtures
+        $: docker-compose build
+        
+        $: docker-compose up -d
 
-Testing with phpunit:
+4.  Configure the database connection:
+        $ cp .env.dist .env
+        
+5.  Open the .env file and update line 16 according to database password set in the docker config  
+
+        # change from:
+        DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name
+        
+        #to:
+        DATABASE_URL=mysql://symfony:symfony@docker-symfony_db_1:3306/symfony
+
+6.  In your local OS, add a domain entry for symfony.localhost in your /etc/hosts
+
+        $: sudo vim /etc/hosts
+        
+            127.0.0.1	localhost   symfony.localhost
+
+7.  DONE! accessing symfony.localhost in your browser should show Symfony's default page
+
+
+## Application setup 
+
+1.  Enter the application container and create the database tables by running the migrations:
+
+        $: docker exec -it docker-symfony_php_1 ash
+
+        $: bin/console doctrine:migrations:execute
+
+2.  Also in the application container, create some tags:
+
+        $: bin/console add-tag Android
+
+        $: bin/console add-tag iOS
+
+        $: bin/console add-tag WindowsPhone
+
+3.  DONE! you now have some tags to play around while creating products
+
+4.  Access: http://symfony.localhost/product to start
+
+
