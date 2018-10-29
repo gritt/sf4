@@ -80,7 +80,7 @@ class ProductController extends AbstractController
             $em->persist($product);
             $em->flush();
 
-            return $this->redirectToRoute('product_edit', ['id' => $product->getId()]);
+            return $this->redirectToRoute('product_index');
         }
 
         return $this->render('product/edit.html.twig', [
