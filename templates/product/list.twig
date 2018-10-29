@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-striped">
 
         <thead>
             <tr>
@@ -21,8 +21,22 @@
                 <td>{{ product.title }}</td>
                 <td>{{ product.stock }}</td>
                 <td>
-                    <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+                    <a class="btn btn-outline-secondary btn-sm" href="{{ path('product_show', {'id': product.id}) }}">
+                        <svg class="feather feather-eye sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24"
+                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </a>
+                    <a class="btn btn-outline-secondary btn-sm" href="{{ path('product_edit', {'id': product.id}) }}">
+                        <svg class="feather feather-edit sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24"
+                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path>
+                            <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+                        </svg>
+                    </a>
                 </td>
             </tr>
             {% else %}
