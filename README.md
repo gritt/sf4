@@ -21,7 +21,7 @@
         
         $: docker-compose up -d
 
-4.  Configure the database connection:
+4.  Enter the "symfony" dir and configure the database connection:
 
         $ cp .env.dist .env
         
@@ -44,7 +44,7 @@
 
 ## Application setup 
 
-1.  Enter the application container and create the database tables by running the migrations:
+1.  Back in the "docker-symfony" dir, enter the application container and create the database tables running the migrations:
 
         $: docker exec -it docker-symfony_php_1 ash
 
